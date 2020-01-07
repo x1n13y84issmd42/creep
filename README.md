@@ -24,9 +24,9 @@ Runes is a tool to automatically and transparently encrypt and decrypt sensitive
 ![](assets/runes.png)
 
 ### Usage
-You'll need two git hooks in your project, `pre-commit` & `post-checkout`. You can use ones from the `runes/.githooks` folder and copy them over to the `.git/hooks` directory in your project.
+You'll need two git hooks in your project, `pre-commit` & `post-checkout`. You can use the ones from the `runes/.githooks` folder and copy them over to the `.git/hooks` directory in your project.
 
-Also you'll need keys:
+Also you'll need keys, so generate them from your project root directory:
 ```Shell
 creep/runes/keygen
 ```
@@ -34,9 +34,10 @@ creep/runes/keygen
 And a list of sensitive files to encrypt before commiting them to git:
 ```Shell
 echo ".env" > .creep/.runes
+echo "config/secrets.json" >> .creep/.runes
 ```
 
-And you're set for keeping private data in git. Just go on adding files, commiting & pushing as usual, Runes will take care about the privacy.
+And you're set for keeping private data in git. Just go on adding files, commiting & pushing as usual, Runes will take care about the privacy. The files from the `.creep/.runes` list are now encrypted and decrypted as you go.
 
 The `.creep/runes.private.key` file is gitignored, so take some care about it, so it won't get lost or something, otherwise you won't ever read your precious files again, y'know.
 
