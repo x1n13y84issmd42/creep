@@ -45,7 +45,7 @@ function runes.load {
 function runes.new.passKey {
 	runes.log "Generating a new passkey file..."
 	openssl rand -hex 128 > $PASS_KEY_FILE
-	git.ignore $PASS_KEY_FILE
+	# git.ignore $PASS_KEY_FILE
 }
 
 # Checks if the given path belongs to the runes file.
