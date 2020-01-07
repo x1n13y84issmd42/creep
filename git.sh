@@ -12,7 +12,7 @@ function git.changes {
 }
 
 function git.add {
-	git add $1
+	git add -f $1
 }
 
 # Properly (i.e. only once) .gitignores the given file

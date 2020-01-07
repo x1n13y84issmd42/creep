@@ -38,10 +38,14 @@ function runes.load {
 }
 
 # Generates a new passkey file.
+# The passkey is needed to encrypt large files, which is impossible with smaller key sizes,
+# so a random key is used to encrypt the files, then in turn it's enrypted with the public key
+# and added to the repo.
 # Usually it's used once per commit.
 function runes.new.passKey {
 	runes.log "Generating a new passkey file..."
 	openssl rand -hex 128 > $PASS_KEY_FILE
+	git.ignore $PASS_KEY_FILE
 }
 
 # Checks if the given path belongs to the runes file.
