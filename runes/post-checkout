@@ -13,3 +13,5 @@ for FILE in ${RUNES[@]}; do
 		runes.decrypt $FILE
 	fi;
 done
+
+runes.log "\o/"
