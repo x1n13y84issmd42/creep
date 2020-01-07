@@ -23,9 +23,8 @@ function git.ignore {
 	readarray -t IGNORED < .gitignore
 
 	if [[ " ${IGNORED[@]} " =~ " $1 " ]]; then
-		echo "The $1 is already .gitignored, doing nothing."
+		:
 	else
-		echo "The file doesn't contain $1, gotta add it there."
 		echo $1 >> .gitignore
 	fi
 }
