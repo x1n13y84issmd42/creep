@@ -19,7 +19,9 @@ mkdir .creep
 ```
 
 ## Runes
-Runes is a tool to automatically encrypt and decrypt sensitive files upon commits, clones & checkouts. Now you can keep your tokens in the repo safely.
+Runes is a tool to automatically and transparently encrypt and decrypt sensitive files on commits, clones & checkouts. Now you can keep your tokens in the repo safely.
+
+![](assets/runes.png)
 
 ### Usage
 You'll need two git hooks. A `pre-commit` one with the following contents:
@@ -44,6 +46,6 @@ And a list of sensitive files to encrypt before commiting them to git:
 echo ".env" > .creep/.runes
 ```
 
-And you're set for keeping private data in git.
+And you're set for keeping private data in git. Just continue adding files, commiting & pushing as usual, Runes will take care about the privacy.
 
 The `.creep/runes.private.key` file is gitignored, so take some care about it, so it won't get lost or something, otherwise you won't ever read your precious files again, y'know.
