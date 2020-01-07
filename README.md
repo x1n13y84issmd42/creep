@@ -24,7 +24,7 @@ Runes is a tool to automatically and transparently encrypt and decrypt sensitive
 ![](assets/runes.png)
 
 ### Usage
-You'll need two git hooks to your project, `pre-commit` & `post-checkout`. You can use ones from the `runes/.githooks` folder and copy them over to the `.git/hooks` directory in your project.
+You'll need two git hooks in your project, `pre-commit` & `post-checkout`. You can use ones from the `runes/.githooks` folder and copy them over to the `.git/hooks` directory in your project.
 
 Also you'll need keys:
 ```Shell
