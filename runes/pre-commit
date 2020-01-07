@@ -1,0 +1,27 @@
+#!/bin/bash
+
+source creep/runes/runes.sh
+source creep/creep.sh
+
+runes.load
+runes.encrypt.start
+
+# Reading the git status
+FILES=$(git.status)
+FINISHME=0
+
+for FILE in ${FILES[@]}; do
+	FILE=${FILE#*  } # Trimming that leading "M  " status marker.
+
+	if runes.isRune $FILE; then
+		runes.encrypt $FILE
+		git.add $FILE
+		runes.decrypt $FILE
+
+		FINISHME=1
+	fi;
+done
+
+if [[ $FINISHME == 1 ]]; then
+	runes.encrypt.finish;
+fi

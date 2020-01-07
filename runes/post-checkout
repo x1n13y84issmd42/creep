@@ -1,0 +1,15 @@
+#!/bin/bash
+
+source creep/runes/runes.sh
+source creep/creep.sh
+
+runes.load
+runes.decrypt.start
+
+for FILE in ${RUNES[@]}; do
+	FILE=${FILE#*  } # Trimming that leading "M  " status marker.
+
+	if runes.isRune $FILE; then
+		runes.decrypt $FILE
+	fi;
+done
