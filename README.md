@@ -42,5 +42,4 @@ And you're set for keeping private data in git. Just go on adding files, commiti
 The `.creep/runes.private.key` file is gitignored, so take some care about it, so it won't get lost or something, otherwise you won't ever read your precious files again, y'know.
 
 ## TODO
-* [ ] A warning message to keep the `.creep/runes.private.key` file in `creep/runes/keygen.sh`;
 * [ ] `runes.diff`, a check for the decoded files change - in `pre-commit` first encrypt the files with the old version of the passkey file, check `git diff`, in case there is difference - reencrypt it with a new passkey as usual.

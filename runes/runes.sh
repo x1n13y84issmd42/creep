@@ -50,7 +50,7 @@ function runes.new.passKey {
 
 # Checks if the given path belongs to the runes file.
 # Arguments:
-#	@1	A file path to check.
+#	$1	A file path to check.
 function runes.isRune {
 	for RUNE in ${RUNES[@]}; do
 		if [[ $RUNE == $1 ]]; then
@@ -93,9 +93,10 @@ function runes.encrypt.start {
 
 # Encrypts a single file with a passkey which is generated once per commit.
 # Arguments:
-#	@1 A path to a file to encrypt.
+#	$1 A path to a file to encrypt.
 function runes.encrypt {
 	if runes.encrypt.precondition "encrypt" $1; then
+		#TODO: tunes.diff $1
 		local passKey=$(runes.passKey)
 		local tmpFN="$1.enc"
 
@@ -136,7 +137,7 @@ function runes.decrypt.start {
 
 # Decrypts a single file with a passkey which is generated once per commit.
 # Arguments:
-#	@1 A path to a file to decrypt.
+#	$1 A path to a file to decrypt.
 function runes.decrypt {
 	if runes.decrypt.precondition "decrypt" $1; then
 		local passKey=$(runes.passKey)

@@ -17,7 +17,7 @@ function git.add {
 
 # Properly (i.e. only once) .gitignores the given file
 # Arguments:
-#	@1 A file path to .gitignore.
+#	$1 A file path to .gitignore.
 function git.ignore {
 	IFS=$'\n'
 	readarray -t IGNORED < .gitignore
