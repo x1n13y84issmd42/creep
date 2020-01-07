@@ -6,7 +6,7 @@ source creep/runes/runes.sh
 BITS=${1:-4096}
 
 runes.log "Generating a pair of keys ($BITS bits long) to encrypt your files with."
-runes.log "You will be prompted for a passphrase - ${lcHint}don't care about it's complexity${lcX}, it will be stripped from the key later."
+runes.log "You will be prompted for a passphrase - ${lcHint}don't care about remembering it${lcX}, it will be stripped from the key later."
 
 # Generating the key files
 PUB=.creep/runes.public.key
@@ -23,7 +23,7 @@ SSLRES=$?
 if [[ $SSLRES == 0 ]]; then
 	# Gitignoring the private key file
 	runes.log ".gitignoring the $PRIV file..."
-	echo $PRIV >> .gitignore 
+	git.ignore $PRIV 
 
 	runes.log "Done \o/"
 else
