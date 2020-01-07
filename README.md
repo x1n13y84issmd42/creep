@@ -29,19 +29,17 @@ creep/runes/pre-commit
 ```
 
 and a `post-checkout` one:
-
 ```Shell
 #!/bin/sh
 creep/runes/post-checkout
 ```
 
-Also you'll need keys.
+Also you'll need keys:
 ```Shell
 creep/runes/keygen
 ```
 
-And a list of sensitive files to encrypt before commiting them to git.
-
+And a list of sensitive files to encrypt before commiting them to git:
 ```Shell
 echo ".env" > .creep/.runes
 ```
