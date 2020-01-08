@@ -48,5 +48,4 @@ CREEP_RUNES_OFF=1 git checkout .
 ```
 
 ## TODO
-* [ ] `runes.diff`, a check for the decoded files change - in `pre-commit` first encrypt the files with the old version of the passkey file, check `git diff`, in case there is difference - reencrypt it with a new passkey as usual.
 * [ ] a CLI argument to control log verbosity.
