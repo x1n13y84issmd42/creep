@@ -154,7 +154,13 @@ function runes.decrypt {
 
 		runes.log "Decrypting \e[35m\e[7m${1}\e[0m"
 		openssl enc -d -aes-256-cbc -pass file:$passKey -in $1 -out $tmpFN
-		mv $tmpFN $1
+
+		if [[ $? == 0 ]]; then
+			mv $tmpFN $1
+		else
+			runes.log "${lcErr}Could not decrypt \e[35m\e[7m${1}\e[0m"
+			[[ -f $tmpFN ]] && rm $tmpFN
+		fi
 	fi
 }
 
