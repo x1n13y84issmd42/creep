@@ -52,7 +52,7 @@ function runes.load {
 # and added to the repo.
 # Usually it's used once per commit.
 function runes.new.passKey {
-	runes.log "Generating a new passkey file..."
+	runes.log "Generating a new passkey file."
 	openssl rand -hex 128 > $PASS_KEY_FILE
 	# git.ignore $PASS_KEY_FILE
 }
@@ -103,13 +103,14 @@ function runes.encrypt.start {
 # Encrypts a single file with a passkey which is generated once per commit.
 # Arguments:
 #	$1 A path to a file to encrypt.
+#	$2 A silence flag.
 function runes.encrypt {
 	if runes.encrypt.precondition "encrypt" $1; then
 		#TODO: tunes.diff $1
 		local passKey=$(runes.passKey)
 		local tmpFN="$1.enc"
 
-		runes.log "Encrypting \e[35m\e[7m${1}\e[0m"
+		[[ ! $2 ]] && runes.log "Encrypting \e[35m\e[7m${1}\e[0m."
 		openssl enc -aes-256-cbc -pass file:$passKey -nosalt -in $1 -out $tmpFN
 		mv $tmpFN $1
 	fi
@@ -119,13 +120,19 @@ function runes.encrypt {
 function runes.encrypt.finish {
 	if runes.encrypt.precondition "finish the encryption"; then
 		local pubKey=$(runes.publicKey)
+		local privKey=$(runes.privateKey)
 		local passKey=$(runes.passKey)
 		local tmpFN="$passKey.enc"
 
-		runes.log "Encrypting the \e[35m\e[7m$passKey\e[0m file and adding it to the repository..."
+		runes.log "Encrypting the \e[35m\e[7m$passKey\e[0m file and adding it to the repository."
 		openssl rsautl -encrypt -pubin -inkey $pubKey -in $passKey -out $tmpFN
 		mv $tmpFN $passKey
 		git.add $passKey
+
+		# Decrypting it back for consistency
+		#TODO: move openssl ops, get rid of that mv
+		openssl rsautl -decrypt -inkey $privKey -in $passKey -out $tmpFN
+		mv $tmpFN $passKey
 
 		runes.log "\o/"
 	fi;
@@ -138,7 +145,7 @@ function runes.decrypt.start {
 		local passKey=$(runes.passKey)
 		local tmpFN="$passKey.dec"
 
-		runes.log "Decrypting the \e[35m\e[7m$passKey\e[0m file..."
+		runes.log "Decrypting the \e[35m\e[7m$passKey\e[0m file."
 		openssl rsautl -decrypt -inkey $privKey -in $passKey -out $tmpFN
 		mv $tmpFN $passKey
 	fi
@@ -147,18 +154,19 @@ function runes.decrypt.start {
 # Decrypts a single file with a passkey which is generated once per commit.
 # Arguments:
 #	$1 A path to a file to decrypt.
+#	$2 A silence flag.
 function runes.decrypt {
 	if runes.decrypt.precondition "decrypt" $1; then
 		local passKey=$(runes.passKey)
 		local tmpFN="$1.dec"
 
-		runes.log "Decrypting \e[35m\e[7m${1}\e[0m"
+		[[ ! $2 ]] && runes.log "Decrypting \e[35m\e[7m${1}\e[0m."
 		openssl enc -d -aes-256-cbc -pass file:$passKey -nosalt -in $1 -out $tmpFN
 
 		if [[ $? == 0 ]]; then
 			mv $tmpFN $1
 		else
-			runes.log "${lcErr}Could not decrypt \e[35m\e[7m${1}\e[0m"
+			runes.log "${lcErr}Could not decrypt \e[35m\e[7m${1}\e[0m."
 			[[ -f $tmpFN ]] && rm $tmpFN
 		fi
 	fi

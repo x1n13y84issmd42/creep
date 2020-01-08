@@ -28,3 +28,11 @@ function git.ignore {
 		echo $1 >> .gitignore
 	fi
 }
+
+function git.diff {
+	local output=$(git diff $1)
+
+	[[ -z $output ]] && return 255
+
+	return 0
+}
