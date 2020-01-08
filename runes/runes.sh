@@ -29,9 +29,12 @@ function runes.load {
 			runes.log "${lcErr}You don't have a private key to decrypt your content with, so you won't be able to access contents of some files from this repository."
 		fi
 
-		if [[ ! (-f $PUB_KEY_FILE && -f $PRIV_KEY_FILE) ]]; then
+		if [[ (! -f $PUB_KEY_FILE) && (! -f $PRIV_KEY_FILE) ]]; then
 			runes.log "${lcHint}Create a pair of keys by running ${lcCmd}creep/runes/keygen.sh${lcX}."
-		fi;
+		elif [[ (-f $PUB_KEY_FILE) && (! -f $PRIV_KEY_FILE) ]]; then
+			runes.log "You have the ${lcCmd}$PUB_KEY_FILE${lcX}, so there must be it's private counterpart somwhere."
+			runes.log "${lcHint}Ask around your team for the ${lcCmd}$PRIV_KEY_FILE${lcX} file for this project."
+		fi
 	else
 		runes.log "You don't have a runes file. ${lcHint}Create a ${lcCmd}${RUNES_FILE}${lcHint} file in your project root to start using the encryption."
 	fi
