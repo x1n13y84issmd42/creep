@@ -27,7 +27,7 @@ if [[ $SSLRES == 0 ]]; then
 
 	runes.log "${lcAlert}Remember to keep the ${lcCmd}${PRIV}${lcAlert} file secure and backup it up in multiple different storages."
 	runes.log "${lcAlert}Your teammates will need it in order to access the secured files."
-	runes.log "Done \o/"
+	runes.log "\o/"
 else
 	runes.log "Failed to generate keys."
 fi

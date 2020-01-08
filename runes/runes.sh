@@ -16,6 +16,12 @@ PASS_KEY_FILE=.creep/runes.pass.key
 # giving some hints on where to obtain them on case they're missing,
 # and, if everything is in place, reading the .runes file.
 function runes.load {
+
+	if [[ $CREEP_RUNES_OFF == 1 ]]; then
+		runes.log "Disabled by CREEP_RUNES_OFF=1 environment variable; exiting."
+		exit 0
+	fi
+
 	# Checking for the .runes file
 	if [[ -f $RUNES_FILE ]]; then
 		# Reading it
