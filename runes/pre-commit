@@ -10,9 +10,10 @@ CHANGED=()
 for RUNE in ${RUNES[@]}; do
 	runes.encrypt $RUNE silent
 	if git.diff $RUNE; then
+		runes.loggg "${lcRune}$RUNE${lcX} has changed."
 		CHANGED+=("$RUNE")
 	else
-		runes.loggg "${lcRune}$RUNE${lcX} is up to date"
+		runes.loggg "${lcRune}$RUNE${lcX} is up to date."
 	fi
 	runes.decrypt $RUNE silent
 done;

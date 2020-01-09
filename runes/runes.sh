@@ -2,24 +2,22 @@
 
 source creep/git.sh
 
-LOG_VERBOSITY=1
-
 # A printing function.
 function runes.echo {
 	_IFS=$IFS && IFS='' && echo -en "\e[35mrunes${lcX}" $@ >&2 && echo -en "$lcX\n" >&2 && IFS=$_IFS
 }
 
-# A logging function.
+# A logging functions.
 function runes.log {
-	[[ $LOG_VERBOSITY -ge 1 ]] && runes.echo $@
+	[[ ${CREEP_RUNES_LOG:-2} -ge 1 ]] && runes.echo $@
 }
 
 function runes.logg {
-	[[ $LOG_VERBOSITY -ge 2 ]] && runes.echo $@
+	[[ ${CREEP_RUNES_LOG:-2} -ge 2 ]] && runes.echo $@
 }
 
 function runes.loggg {
-	[[ $LOG_VERBOSITY -ge 3 ]] && runes.echo $@
+	[[ ${CREEP_RUNES_LOG:-2} -ge 3 ]] && runes.echo $@
 }
 
 RUNES_FILE=.creep/.runes
@@ -37,7 +35,7 @@ function runes.load {
 		exit 0
 	fi
 
-	runes.load.args $@;
+	# runes.load.args $@;
 
 	# Checking for the .runes file
 	if [[ -f $RUNES_FILE ]]; then
@@ -68,8 +66,8 @@ function runes.load.args {
 	while getopts ":l:" opt; do
 		case $opt in
 			l)
-				runes.loggg "Setting LOG_VERBOSITY to $OPTARG"
-				LOG_VERBOSITY=$OPTARG
+				runes.loggg "Setting CREEP_RUNES_LOG to $OPTARG"
+				CREEP_RUNES_LOG=$OPTARG
 			;;
 		esac
 	done

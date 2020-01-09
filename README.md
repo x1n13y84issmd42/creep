@@ -42,13 +42,8 @@ And you're set for keeping private data in git. Just go on adding files, commiti
 > :eggplant: The `.creep/runes.private.key` file is gitignored, take some care about it, so it won't get lost or something, otherwise you won't ever read your precious files again, y'know.
 
 ### Configuration
-You can specify how verbose you want the log output to be with the `-l` option in the hook file:
-```
-creep/runes/pre-commit -l 2
-```
-Log verbosity up to level 3 is supported.
 
-You can temporarily turn Runes off by setting the environment variable `CREEP_RUNES_OFF` to `1`:
-```
-CREEP_RUNES_OFF=1 git checkout .
-```
+|Parameter|Decription|Values|
+|-|-|-|
+|`CREEP_RUNES_LOG`|Controls the logging verbosity.|1—3
+|`CREEP_RUNES_OFF`|Disables Runes altogether.|1
