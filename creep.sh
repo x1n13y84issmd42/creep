@@ -16,7 +16,7 @@ lcB=$lc1
 lcD=$lc2
 lcU=$lc4
 lcL=$lc5
-lcR=$lc7
+lcR=$lc7	# Inverse
 lcH=$lc8
 
 lcBlack="\e[30m"
@@ -62,3 +62,5 @@ lcErr="$lcbgRed$lcWhite"
 lcHint="${lcbgLGray}$lcBlack"
 lcCmd="$lcbgLGray$lcBlue"
 lcAlert="$lcbgYellow$lcBlack"
+
+lcRune="\e[35m\e[7m"

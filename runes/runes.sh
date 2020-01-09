@@ -2,9 +2,24 @@
 
 source creep/git.sh
 
+LOG_VERBOSITY=1
+
+# A printing function.
+function runes.echo {
+	_IFS=$IFS && IFS='' && echo -en "\e[35mrunes${lcX}" $@ >&2 && echo -en "$lcX\n" >&2 && IFS=$_IFS
+}
+
 # A logging function.
 function runes.log {
-	_IFS=$IFS && IFS='' && echo -en "\e[35mrunes\e[0m" $@ >&2 && echo -en "$lcX\n" >&2 && IFS=$_IFS
+	[[ $LOG_VERBOSITY -ge 1 ]] && runes.echo $@
+}
+
+function runes.logg {
+	[[ $LOG_VERBOSITY -ge 2 ]] && runes.echo $@
+}
+
+function runes.loggg {
+	[[ $LOG_VERBOSITY -ge 3 ]] && runes.echo $@
 }
 
 RUNES_FILE=.creep/.runes
@@ -18,9 +33,11 @@ PASS_KEY_FILE=.creep/runes.pass.key
 function runes.load {
 
 	if [[ $CREEP_RUNES_OFF == 1 ]]; then
-		runes.log "Disabled by CREEP_RUNES_OFF=1 environment variable; exiting."
+		runes.logg "Disabled by CREEP_RUNES_OFF=1 environment variable; exiting."
 		exit 0
 	fi
+
+	runes.load.args $@;
 
 	# Checking for the .runes file
 	if [[ -f $RUNES_FILE ]]; then
@@ -46,15 +63,26 @@ function runes.load {
 	fi
 }
 
+# Parses command line args and configures the app.
+function runes.load.args {
+	while getopts ":l:" opt; do
+		case $opt in
+			l)
+				runes.loggg "Setting LOG_VERBOSITY to $OPTARG"
+				LOG_VERBOSITY=$OPTARG
+			;;
+		esac
+	done
+}
+
 # Generates a new passkey file.
 # The passkey is needed to encrypt large files, which is impossible with smaller key sizes,
 # so a random key is used to encrypt the files, then in turn it's enrypted with the public key
 # and added to the repo.
 # Usually it's used once per commit.
 function runes.new.passKey {
-	runes.log "Generating a new passkey file."
+	runes.logg "Generating a new passkey file."
 	openssl rand -hex 128 > $PASS_KEY_FILE
-	# git.ignore $PASS_KEY_FILE
 }
 
 # Checks if the given path belongs to the runes file.
@@ -86,10 +114,6 @@ function runes.privateKey {
 
 # Outputs a path to a passkey file.
 function runes.passKey {
-	# if [[ ! -f PASS_KEY_FILE ]]; then
-	# 	runes.new.passKey;
-	# fi
-
 	echo $PASS_KEY_FILE
 }
 
@@ -110,7 +134,7 @@ function runes.encrypt {
 		local passKey=$(runes.passKey)
 		local tmpFN="$1.enc"
 
-		[[ ! $2 ]] && runes.log "Encrypting \e[35m\e[7m${1}\e[0m."
+		[[ ! $2 ]] && runes.log "Encrypting ${lcRune}${1}${lcX}."
 		openssl enc -aes-256-cbc -pass file:$passKey -nosalt -in $1 -out $tmpFN
 		mv $tmpFN $1
 	fi
@@ -124,7 +148,7 @@ function runes.encrypt.finish {
 		local passKey=$(runes.passKey)
 		local tmpFN="$passKey.enc"
 
-		runes.log "Encrypting the \e[35m\e[7m$passKey\e[0m file and adding it to the repository."
+		runes.log "Encrypting the ${lcRune}$passKey${lcX} file and adding it to the repository."
 		openssl rsautl -encrypt -pubin -inkey $pubKey -in $passKey -out $tmpFN
 		mv $tmpFN $passKey
 		git.add $passKey
@@ -134,7 +158,7 @@ function runes.encrypt.finish {
 		openssl rsautl -decrypt -inkey $privKey -in $passKey -out $tmpFN
 		mv $tmpFN $passKey
 
-		runes.log "\o/"
+		runes.logg "\o/"
 	fi;
 }
 
@@ -145,7 +169,7 @@ function runes.decrypt.start {
 		local passKey=$(runes.passKey)
 		local tmpFN="$passKey.dec"
 
-		runes.log "Decrypting the \e[35m\e[7m$passKey\e[0m file."
+		runes.logg "Decrypting the ${lcRune}$passKey${lcX} file."
 		openssl rsautl -decrypt -inkey $privKey -in $passKey -out $tmpFN
 		mv $tmpFN $passKey
 	fi
@@ -160,13 +184,13 @@ function runes.decrypt {
 		local passKey=$(runes.passKey)
 		local tmpFN="$1.dec"
 
-		[[ ! $2 ]] && runes.log "Decrypting \e[35m\e[7m${1}\e[0m."
+		[[ ! $2 ]] && runes.log "Decrypting ${lcRune}${1}${lcX}."
 		openssl enc -d -aes-256-cbc -pass file:$passKey -nosalt -in $1 -out $tmpFN
 
 		if [[ $? == 0 ]]; then
 			mv $tmpFN $1
 		else
-			runes.log "${lcErr}Could not decrypt \e[35m\e[7m${1}\e[0m."
+			runes.log "${lcErr}Could not decrypt ${lcRune}${1}${lcX}."
 			[[ -f $tmpFN ]] && rm $tmpFN
 		fi
 	fi

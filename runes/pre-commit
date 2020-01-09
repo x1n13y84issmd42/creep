@@ -3,7 +3,7 @@
 source creep/runes/runes.sh
 source creep/creep.sh
 
-runes.load
+runes.load $@
 
 CHANGED=()
 
@@ -12,7 +12,7 @@ for RUNE in ${RUNES[@]}; do
 	if git.diff $RUNE; then
 		CHANGED+=("$RUNE")
 	else
-		:
+		runes.loggg "${lcRune}$RUNE${lcX} is up to date"
 	fi
 	runes.decrypt $RUNE silent
 done;
