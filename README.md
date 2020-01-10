@@ -45,5 +45,5 @@ And you're set for keeping private data in git. Just go on adding files, commiti
 
 |Parameter|Decription|Values|
 |-|-|-|
-|`CREEP_RUNES_LOG`|Controls the logging verbosity.|1—3
+|`CREEP_RUNES_LOG`|Controls the logging verbosity. Set it to `0` to disable logging.|0—3
 |`CREEP_RUNES_OFF`|Disables Runes altogether.|1
