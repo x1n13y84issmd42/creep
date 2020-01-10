@@ -35,7 +35,7 @@ function runes.load {
 		exit 0
 	fi
 
-	# runes.load.args $@;
+	runes.load.args $@;
 
 	# Checking for the .runes file
 	if [[ -f $RUNES_FILE ]]; then
