@@ -18,7 +18,7 @@ Also make a directory for creep's stuff in the root of your project:
 mkdir .creep
 ```
 
-## Runes
+# Runes
 Runes is a tool to automatically and transparently encrypt and decrypt sensitive files on commits, clones & checkouts. Now you can keep your tokens in the repo safely.
 
 ![](assets/runes.png)
@@ -47,3 +47,15 @@ And you're set for keeping private data in git. Just go on adding files, commiti
 |-|-|-|
 |`CREEP_RUNES_LOG`|Controls the logging verbosity. Set it to `0` to disable logging.|0—3
 |`CREEP_RUNES_OFF`|Disables Runes altogether.|1
+
+# Boss
+
+A tool to orchestrate a set of repositories in a consistent manner. Provides a `git` proxy script to perform Git ops across all the involved projects.
+
+### //TODO:
+* A list of repos in the `.creep/.boss` file;
+* `boss update` should `git clone` (or `git pull`) all the projects;
+* it should support both `git submodule` mode & `ad-hoc` mode (when it creates folders & clones repos in there, the regular git workflow);
+* `boss git` proxy script to run git across all the linked projects.
+* Should it include also some Docker-related stuff?
+* And essentially be a cluster management tool?
