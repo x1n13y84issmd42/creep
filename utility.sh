@@ -4,11 +4,13 @@
 #	$1 The file location.
 #	$2 The value to check for.
 function flist.contains {
-	IFS=$'\n'
-	readarray -t LINES < $1
+	if [[ -f $1 ]]; then
+		IFS=$'\n'
+		readarray -t LINES < $1
 
-	if [[ " ${LINES[@]} " =~ " $2 " ]]; then
-		return 0
+		if [[ " ${LINES[@]} " =~ " $2 " ]]; then
+			return 0
+		fi
 	fi
 
 	return 255
@@ -19,21 +21,23 @@ function flist.contains {
 #	$1 The file location.
 #	$2 The value to remove from the list.
 function flist.without {
-	IFS=$'\n'
-	local tmp="$1.tmp"
-	[[ -f $tmp ]] && rm $tmp && touch $tmp
+	if [[ -f $1 ]]; then
+		IFS=$'\n'
+		local tmp="$1.tmp"
+		[[ -f $tmp ]] && rm $tmp && touch $tmp
 
-	readarray -t LINES < $1
+		readarray -t LINES < $1
 
-	for L in ${LINES[@]}; do
-		if [[ "$L" = "$2" ]]; then
-			:
-		else
-			echo "$L" >> $tmp
-		fi
-	done
+		for L in ${LINES[@]}; do
+			if [[ "$L" = "$2" ]]; then
+				:
+			else
+				echo "$L" >> $tmp
+			fi
+		done
 
-	cp $tmp $1
+		mv $tmp $1
+	fi
 }
 
 # Installs a Git hook file.

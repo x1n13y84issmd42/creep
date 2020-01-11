@@ -1,0 +1,44 @@
+#!/bin/bash
+
+source "creep/libboss/boss.sh"
+source "creep/utility.sh"
+
+OP=$1
+shift
+
+case $OP in
+	add)
+		for f in "${@}"; do
+			if flist.contains .creep/.boss $f; then
+				boss.log "The ${lcFile}${f}${lcX} project is already under management."
+			else
+				echo "$f" >> .creep/.boss
+				#TODO: mkdir, git clone, etc.
+				boss.log "Managing the ${lcFile}${f}${lcX} project from now on."
+			fi
+		done
+	;;
+
+	remove)
+		for f in "${@}"; do
+			if flist.contains .creep/.boss $f; then
+				flist.without .creep/.boss $f
+				boss.log "Not managing the ${lcFile}${f}${lcX} project anymore."
+			else
+				boss.log "The ${lcFile}${f}${lcX} project has never been managed."
+			fi
+		done
+	;;
+
+	git)
+		boss.log "Executing the git command: ${@}"
+	;;
+
+	x)
+		boss.log "Executing the command: ${@}"
+	;;
+
+	*)
+		boss.log "Unknown command ${lcCmd}$OP"
+	;;
+esac
