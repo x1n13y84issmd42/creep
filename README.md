@@ -3,9 +3,9 @@ Creep, a Git's buddy.
 
 A small toolkit for Git to ease a developer's everyday life.
 
-Consists of
-* [Runes](#runes) &mdash; encrypting sensitive files on the go;
-* [Boss](#boss) &mdash; managing multiple repositories.
+Includes:
+* [Runes](#runes) &mdash; safely keeping sensitive files in repositories with assymetric encryption.
+* [Boss](#boss) &mdash; managing complex projects with demultiplexing commads in multiple folders.
 
 ### Usage
 Add it as a git submodule to your project:
