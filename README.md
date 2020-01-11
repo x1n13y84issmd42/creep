@@ -24,7 +24,10 @@ Runes is a tool to automatically and transparently encrypt and decrypt sensitive
 ![](assets/runes.png)
 
 ### Usage
-You'll need two git hooks in your project, `pre-commit` & `post-checkout`. You can use the ones from the `runes/.githooks` folder and copy them over to the `.git/hooks` directory in your project.
+IN order for Runes to work, you'll need hooks. Runes can install them for you:
+```Shell
+creep/runes install-hooks
+```
 
 Also you'll need keys, so generate them from your project root directory:
 ```Shell
@@ -33,8 +36,9 @@ creep/runes keygen
 
 And a list of sensitive files to encrypt before commiting them to git:
 ```Shell
-echo ".env" > .creep/.runes
-echo "config/secrets.json" >> .creep/.runes
+creep/runes secure .env
+creep/runes secure config/secrets.json
+creep/runes secure keys/veryprivate.key
 ```
 
 And you're set for keeping private data in git. Just go on adding files, commiting & pushing as usual, Runes will take care about the privacy. The files from the `.creep/.runes` list are now encrypted and decrypted as you go.
@@ -48,15 +52,12 @@ And you're set for keeping private data in git. Just go on adding files, commiti
 |`CREEP_RUNES_LOG`|Controls the logging verbosity. Set it to `0` to disable logging.|0—3
 |`CREEP_RUNES_OFF`|Disables Runes altogether.|1
 
-### TODO:
-* [ ] the `creep/runes [un]secure FILENAME` command to add/remove a file to `.creep/.runes`;
-* [ ] `creep/runes install-hooks` to put the hook files in `.git/hooks`;
-
 # Boss
 
-A tool to orchestrate a set of repositories in a consistent manner. Provides a `git` proxy script to perform Git ops across all the involved projects. Basically and analog of [loop])()
+A tool to orchestrate a set of repositories in a consistent manner. Provides a `git` proxy script to perform Git ops across all the involved projects. Basically and analog of [loop](https://github.com/mateodelnorte/loop).
 
 ### //TODO:
+
 * A list of repos in the `.creep/.boss` file;
 * it should support both `git submodule` mode & `ad-hoc` mode (when it creates folders & clones repos in there, the regular git workflow);
 * `creep/boss add REPOURL|NAME` initializes a directory for a project and clones it if a repository URL is provided;
