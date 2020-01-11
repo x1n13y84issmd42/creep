@@ -12,15 +12,23 @@ case $OP in
 	;;
 
 	secure)
-		if flist.contains .creep/.runes $1; then
-			runes.log "The $1 file is already secured."
-		else
-			echo "$1" >> .creep/.runes
-			runes.log "Secured $1."
-		fi
+		for f in "${@}"; do
+			if flist.contains .creep/.runes $f; then
+				runes.log "The $f file is already secured."
+			else
+				echo "$f" >> .creep/.runes
+				runes.log "Secured $f."
+			fi
+		done
 	;;
 
 	unsecure)
+		if flist.contains .creep/.runes $1; then
+			flist.without .creep/.runes $1
+			runes.log "Removed $1 from .creep/runes."
+		else
+			runes.log "The $1 file has never been secured."
+		fi
 	;;
 
 	install-hooks)

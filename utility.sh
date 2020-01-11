@@ -14,6 +14,28 @@ function flist.contains {
 	return 255
 }
 
+# Removes a line from the string list file.
+# Arguments:
+#	$1 The file location.
+#	$2 The value to remove from the list.
+function flist.without {
+	IFS=$'\n'
+	local tmp="$1.tmp"
+	[[ -f $tmp ]] && rm $tmp && touch $tmp
+
+	readarray -t LINES < $1
+
+	for L in ${LINES[@]}; do
+		if [[ "$L" = "$2" ]]; then
+			:
+		else
+			echo "$L" >> $tmp
+		fi
+	done
+
+	cp $tmp $1
+}
+
 # Installs a Git hook file.
 # Arguments:
 #	$1 A Creep (source) hook file location.
