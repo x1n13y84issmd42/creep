@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source creep/creep.sh
+source creep/libcreep/creep.sh
 
 # A logging functions.
 function boss.log {

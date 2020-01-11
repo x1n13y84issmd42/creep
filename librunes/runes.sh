@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source creep/creep.sh
-source creep/git.sh
+source creep/libcreep/creep.sh
+source creep/libcreep/git.sh
 
 # A printing function.
 function runes.echo {
