@@ -11,7 +11,7 @@ case $OP in
 		source creep/librunes/keygen.sh
 	;;
 
-	secure)
+	+|secure)
 		for f in "${@}"; do
 			if flist.contains .creep/.runes $f; then
 				runes.log "The ${lcFile}${f}${lcX} file is already secured."
@@ -22,7 +22,7 @@ case $OP in
 		done
 	;;
 
-	unsecure)
+	-|unsecure)
 		for f in "${@}"; do
 			if flist.contains .creep/.runes $f; then
 				flist.without .creep/.runes $f
