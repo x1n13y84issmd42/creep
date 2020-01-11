@@ -7,7 +7,7 @@ OP=$1
 shift
 
 case $OP in
-	add)
+	+|add)
 		for f in "${@}"; do
 			if flist.contains .creep/.boss $f; then
 				boss.log "The ${lcFile}${f}${lcX} project is already under management."
@@ -19,7 +19,7 @@ case $OP in
 		done
 	;;
 
-	remove)
+	-|rm|remove)
 		for f in "${@}"; do
 			if flist.contains .creep/.boss $f; then
 				flist.without .creep/.boss $f
@@ -30,15 +30,9 @@ case $OP in
 		done
 	;;
 
-	git)
-		boss.log "Executing the git command: ${@}"
-	;;
-
-	x)
-		boss.log "Executing the command: ${@}"
-	;;
-
 	*)
-		boss.log "Unknown command ${lcCmd}$OP"
+		boss.logg "Executing the command: ${lcCmd}${OP} ${@}"
+		boss.load
+		boss.execute "$OP $@"
 	;;
 esac
