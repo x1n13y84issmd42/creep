@@ -58,7 +58,7 @@ And you're set for keeping private data in git. Just go on adding files, commiti
 
 # Boss
 
-A tool execute arbitrary commands in parallel a set of directories under it's management. Attempts to simplify control over sets of microservice projects.
+A tool execute arbitrary commands in parallel in a set of directories under it's management, essentially demultiplexing them. Attempts to simplify control over sets of microservice architectures and other complex projects.
 
 Use it to manage maultiple repositories with fewer commands and automate other tasks over bulks of files.
 
