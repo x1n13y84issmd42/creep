@@ -39,7 +39,7 @@ echo "config/secrets.json" >> .creep/.runes
 
 And you're set for keeping private data in git. Just go on adding files, commiting & pushing as usual, Runes will take care about the privacy. The files from the `.creep/.runes` list are now encrypted and decrypted as you go.
  
-> :eggplant: The `.creep/runes.private.key` file is gitignored, take some care about it, so it won't get lost or something, otherwise you won't ever read your precious files again, y'know.
+> :eggplant: The `.creep/runes.private.key` file is gitignored, take some care about it so it doesn't get lost or something, otherwise you won't ever read your precious files again, y'know.
 
 ### Configuration
 
