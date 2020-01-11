@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source creep/creep.sh
 source creep/git.sh
 
 # A printing function.
@@ -51,7 +52,7 @@ function runes.load {
 		fi
 
 		if [[ (! -f $PUB_KEY_FILE) && (! -f $PRIV_KEY_FILE) ]]; then
-			runes.log "${lcHint}Create a pair of keys by running ${lcCmd}creep/runes/keygen.sh${lcX}."
+			runes.log "${lcHint}Create a pair of keys by running ${lcCmd}creep/runes keygen${lcX}."
 		elif [[ (-f $PUB_KEY_FILE) && (! -f $PRIV_KEY_FILE) ]]; then
 			runes.log "You have the ${lcCmd}${PUB_KEY_FILE}${lcX}, so there must be it's private counterpart somewhere."
 			runes.log "${lcHint}Ask around your team for the ${lcCmd}${PRIV_KEY_FILE}${lcHint} file for this project."

@@ -28,7 +28,7 @@ You'll need two git hooks in your project, `pre-commit` & `post-checkout`. You c
 
 Also you'll need keys, so generate them from your project root directory:
 ```Shell
-creep/runes/keygen
+creep/runes keygen
 ```
 
 And a list of sensitive files to encrypt before commiting them to git:

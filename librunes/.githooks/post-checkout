@@ -1,0 +1,3 @@
+#!/bin/sh
+
+creep/librunes/post-checkout -l 1
