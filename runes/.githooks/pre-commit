@@ -1,3 +1,0 @@
-#!/bin/sh
-
-creep/runes/pre-commit -l 1

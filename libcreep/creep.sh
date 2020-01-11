@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source creep/git.sh
+source creep/libcreep/git.sh
 
 # Log colors & styles
 lc0="\e[0m"
@@ -59,8 +59,36 @@ lcX="$lc0$lcDGray"
 
 # Styles
 lcErr="$lcbgRed$lcWhite"
-lcHint="${lcbgLGray}$lcBlack"
+# lcHint="${lcbgLGray}$lcBlack"
+lcHint="${lcWhite}"
+lcFile="$lcU$lcLBlue"
 lcCmd="$lcbgLGray$lcBlue"
+# lcCmd="$lcU$lcLBlue"
 lcAlert="$lcbgYellow$lcBlack"
 
 lcRune="\e[35m\e[7m"
+
+# A printing function.
+# Arguments:
+#	$1 A module/topic name.
+#	$2 A color/style.
+#	$@ Arguments to print.
+function creep.echo {
+	local t=$1
+	local s=$2
+	shift 2
+	_IFS=$IFS && IFS='' && echo -en "${s}${t}${lcX}" $@ >&2 && echo -en "$lcX\n" >&2 && IFS=$_IFS
+}
+
+# A logging functions.
+function creep.log {
+	[[ ${CREEP_LOG:-2} -ge 1 ]] && creep.echo "creep" $lcLGray $@
+}
+
+function creep.logg {
+	[[ ${CREEP_LOG:-2} -ge 2 ]] && creep.echo "creep" $lcLGray $@
+}
+
+function creep.loggg {
+	[[ ${CREEP_LOG:-2} -ge 3 ]] && creep.echo "creep" $lcLGray $@
+}

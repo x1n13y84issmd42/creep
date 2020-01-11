@@ -1,12 +1,14 @@
 #!/bin/bash
 
-source creep/runes/runes.sh
-source creep/creep.sh
+source creep/librunes/runes.sh
+source creep/libcreep/creep.sh
 
 runes.load $@
 
 CHANGED=()
 
+# First thing: checking if the secured file has changed. This is done by encrypting it
+# with a current version of the passkey and executing git diff of the result against HEAD.
 for RUNE in ${RUNES[@]}; do
 	runes.encrypt $RUNE silent
 	if git.diff $RUNE; then
@@ -18,6 +20,7 @@ for RUNE in ${RUNES[@]}; do
 	runes.decrypt $RUNE silent
 done;
 
+# STarting the encryption and adding only the changeed files.
 if [[ ${#CHANGED[@]} > 0 ]]; then
 	runes.encrypt.start
 

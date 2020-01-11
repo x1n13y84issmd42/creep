@@ -1,0 +1,3 @@
+#!/bin/sh
+
+creep/librunes/pre-commit -l 1

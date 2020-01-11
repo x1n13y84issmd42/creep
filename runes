@@ -1,0 +1,44 @@
+#!/bin/bash
+
+source "creep/librunes/runes.sh"
+source "creep/libcreep/utility.sh"
+
+OP=$1
+shift
+
+case $OP in
+	keygen)
+		source creep/librunes/keygen.sh
+	;;
+
+	secure)
+		for f in "${@}"; do
+			if flist.contains .creep/.runes $f; then
+				runes.log "The ${lcFile}${f}${lcX} file is already secured."
+			else
+				echo "$f" >> .creep/.runes
+				runes.log "Securing the ${lcFile}${f}${lcX} file from now on."
+			fi
+		done
+	;;
+
+	unsecure)
+		for f in "${@}"; do
+			if flist.contains .creep/.runes $f; then
+				flist.without .creep/.runes $f
+				runes.log "Not securing the ${lcFile}${f}${lcX} file anymore."
+			else
+				runes.log "The ${lcFile}${f}${lcX} file has never been secured."
+			fi
+		done
+	;;
+
+	install-hooks)
+		hook.install creep/librunes/.githooks/pre-commit .git/hooks/pre-commit $1
+		hook.install creep/librunes/.githooks/post-checkout .git/hooks/post-checkout $1
+	;;
+
+	*)
+		runes.log "Unknown command ${lcCmd}$OP"
+	;;
+esac

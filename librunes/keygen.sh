@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source creep/creep.sh
-source creep/runes/runes.sh
+source creep/libcreep/creep.sh
+source creep/librunes/runes.sh
 
 BITS=${1:-4096}
 
