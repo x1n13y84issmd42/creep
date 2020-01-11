@@ -54,15 +54,26 @@ And you're set for keeping private data in git. Just go on adding files, commiti
 
 # Boss
 
-A tool to orchestrate a set of repositories in a consistent manner. Provides a `git` proxy script to perform Git ops across all the involved projects. Basically and analog of [loop](https://github.com/mateodelnorte/loop).
+A tool execute arbitrary commands in parallel a set of directories under it's management. Attempts to simplify control over sets of microservice projects.
 
-### //TODO:
+Use it to manage maultiple repositories with fewer commands and automate other tasks over bulks of files.
 
-* A list of repos in the `.creep/.boss` file;
-* it should support both `git submodule` mode & `ad-hoc` mode (when it creates folders & clones repos in there, the regular git workflow);
-* `creep/boss add REPOURL|NAME` initializes a directory for a project and clones it if a repository URL is provided;
-* `creep/boss update [PROJ1 PROJ2 ...]` should `git clone` (or `git pull`) all the projects (or only specified ones);
-* `creep/boss git $@` a Git proxy script to execute Git ops across all the subprojects;
-* `creep/boss x $@` executes a command across the subprojects;
-* Should it include also some Docker-related stuff?
-* And essentially be a cluster management tool?
+### Usage
+First, add a directory under the Boss' management. It can be either a simple directory or a Git repository URL:
+```
+creep/boss + DirOne Folder2 https://github.com/microsoft/TypeScript.git
+```
+This will add `TypeScript` as a git submodule to the project.
+
+Assuming `DirOne` & `Folder2` are working copies as well, now you can run:
+```
+creep/boss git checkout -b bossed/totally
+```
+This executes the `git checkout -b bossed/totally` in all three folders and essentially switches all the projects to new, the same named, branches.
+
+Arbitrary CLI commands are possible.
+
+If you want to use redirections `>` & `>>`, quote your command line:
+```
+creep/boss "echo '## Bossed!' >> README.md && git commit -am 'Hola'"
+```
