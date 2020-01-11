@@ -49,8 +49,8 @@ And you're set for keeping private data in git. Just go on adding files, commiti
 |`CREEP_RUNES_OFF`|Disables Runes altogether.|1
 
 ### TODO:
-* [ ] the `creep/runes [un]secure FILENAME` command to add/remove a file to `.creep/.runes`
-* [ ] `creep/runes install-hooks` to put the hook files in `.git/hooks`
+* [ ] the `creep/runes [un]secure FILENAME` command to add/remove a file to `.creep/.runes`;
+* [ ] `creep/runes install-hooks` to put the hook files in `.git/hooks`;
 
 # Boss
 
