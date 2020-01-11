@@ -38,3 +38,72 @@ function boss.execute {
 		cd $WD
 	done
 }
+
+# Adds a folder or a repository under namagement.
+# Arguments:
+#	$1 Either a directory name or a repository URL.
+#	$2 Repository management mode. Valid values are 'clone' and 'submodule'.
+function boss.add {
+	local dirName="$1"
+	local mode="$2"
+	local dogit=0
+
+	if str.isURL $1; then
+		dirName=${dirName##*\/}
+		dirName=${dirName%%\.*}
+		dogit=1
+	fi
+
+	if flist.contains $BOSS_FILE $dirName; then
+		boss.log "The ${lcFile}${dirName}${lcX} project is already under management."
+		return 0
+	fi
+
+	if [[ $dogit == 1 ]]; then
+		case $2 in
+			sub|submodule)
+				boss.logg "Adding a Git submodule $1."
+				git submodule add --force $1
+			;;
+
+			clone)
+				if [[ -d $dirName ]]; then
+					boss.logg "The ${lcFile}$dirName${lcX} directory already exists. Trying to clone anyway."
+					boss.logg "${lcAlert}TODO:${lcX} Check for files."
+					git clone $1 $dirName
+				else
+					boss.logg "Cloing the ${lcFile}${1}${lcX}repository."
+					git clone $1
+				fi
+			;;
+
+			*)
+				boss.log "${lcError}Unknown mode ${lcHint}$mode${lcX}."
+				exit 0
+			;;
+		esac
+	else
+		boss.logg "Adding a directory ${lcFile}${dirName}."
+
+		if [[ ! -d $dirName ]]; then
+			boss.logg "The directory is not there, making it."
+			mkdir $dirName
+		fi
+	fi
+
+	echo $dirName >> $BOSS_FILE
+
+	boss.log "Managing the ${lcFile}${dirName}${lcX} project from now on."
+}
+
+# Removes a project under the Boss' management.
+#  Arguments:
+#	$1 A project's directory name to remove.
+function boss.remove {
+	if flist.contains $BOSS_FILE $1; then
+		flist.without $BOSS_FILE $1
+		boss.log "Not managing the ${lcFile}${1}${lcX} project anymore."
+	else
+		boss.log "The ${lcFile}${1}${lcX} project has never been managed."
+	fi
+}

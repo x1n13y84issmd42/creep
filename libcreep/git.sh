@@ -36,3 +36,15 @@ function git.diff {
 
 	return 0
 }
+
+# Checks if the given folder is a Git a repository.
+# Arguments:
+# 	$1 A directory path.
+function git.isRepo {
+	local wd=$(pwd)
+	cd $1
+	$(git status)
+	local xc=$?
+	cd $wd
+	return $xc
+}

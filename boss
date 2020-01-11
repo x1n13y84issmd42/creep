@@ -9,24 +9,13 @@ shift
 case $OP in
 	+|add)
 		for f in "${@}"; do
-			if flist.contains .creep/.boss $f; then
-				boss.log "The ${lcFile}${f}${lcX} project is already under management."
-			else
-				echo "$f" >> .creep/.boss
-				#TODO: mkdir, git clone, etc.
-				boss.log "Managing the ${lcFile}${f}${lcX} project from now on."
-			fi
+			boss.add $f ${CREEP_BOSS_ADD_MODE:-submodule}
 		done
 	;;
 
 	-|rm|remove)
 		for f in "${@}"; do
-			if flist.contains .creep/.boss $f; then
-				flist.without .creep/.boss $f
-				boss.log "Not managing the ${lcFile}${f}${lcX} project anymore."
-			else
-				boss.log "The ${lcFile}${f}${lcX} project has never been managed."
-			fi
+			boss.remove $f
 		done
 	;;
 

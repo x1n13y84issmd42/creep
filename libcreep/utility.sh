@@ -74,3 +74,14 @@ function hook.install {
 		creep.log "Installed the ${lcFile}${runesHook}${lcX}."
 	fi
 }
+
+# Checks if the given string is a URL.
+# Arguments:
+#	$1 A strring to check.
+function str.isURL {
+	if [[ $1 =~ ^http|https|git:\/\/ ]]; then
+		return 0
+	fi
+
+	return 255
+}
