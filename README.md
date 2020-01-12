@@ -29,7 +29,7 @@ Runes is a tool to automatically and transparently encrypt and decrypt sensitive
 ![](assets/runes.png)
 
 ### Usage
-IN order for Runes to work, you'll need hooks. Runes can install them for you:
+In order for Runes to work, you'll need hooks. Runes can install them for you:
 ```Shell
 creep/runes install-hooks
 ```
@@ -59,22 +59,22 @@ And you're set for keeping private data in git. Just go on adding files, commiti
 
 # Boss
 
-A tool execute arbitrary commands in parallel a set of directories under it's management. Attempts to simplify control over sets of microservice projects.
+A tool execute arbitrary commands in parallel in a set of directories under it's management, essentially demultiplexing them. Attempts to simplify control over microservice architectures and other complex projects.
 
-Use it to manage maultiple repositories with fewer commands and automate other tasks over bulks of files.
+Use it to manage multiple repositories with fewer commands and automate other tasks over bulks of files.
 
 ### Usage
 First, add a directory under the Boss' management. It can be either a simple directory or a Git repository URL:
 ```
 creep/boss + DirOne Folder2 https://github.com/microsoft/TypeScript.git
 ```
-This will add `TypeScript` as a git submodule to the project.
+This will add `TypeScript` as a git submodule to the project and start tracking all three folders.
 
 Assuming `DirOne` & `Folder2` are working copies as well, now you can run:
 ```
 creep/boss git checkout -b bossed/totally
 ```
-This executes the `git checkout -b bossed/totally` in all three folders and essentially switches all the projects to new, the same named, branches.
+This executes `git checkout -b bossed/totally` in all three folders and essentially switches all the projects to new branches.
 
 Arbitrary CLI commands are possible.
 
