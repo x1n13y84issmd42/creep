@@ -67,8 +67,8 @@ function runes.load.args {
 	while getopts ":l:" opt; do
 		case $opt in
 			l)
-				runes.loggg "Setting CREEP_RUNES_LOG to $OPTARG"
 				CREEP_RUNES_LOG=$OPTARG
+				runes.loggg "Setting CREEP_RUNES_LOG to $OPTARG"
 			;;
 		esac
 	done
