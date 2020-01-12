@@ -81,9 +81,14 @@ function git.submodule.purge {
 	# Clearing Git cache.
 	out=$(sys.exec git rm -r --cached $1)
 	if [[ $? = 0 ]]; then
-		git.logg "Removed the $F_1 folder and cleared the Git cache."
+		out=$(sys.exec rm -rf $1)
+		if [[ $? = 0 ]]; then
+			git.logg "Removed the $F_1 folder and cleared the Git cache."
+		else
+			git.log "${lcErr}Cleared the Git cache but failed to remove the ${F_1}${lsErr} folder"
+		fi
 	else
-		git.log "${lcErr}Failed to remove the $F_1 folder and clear the Git cache."
+		git.log "${lcErr}Failed to clear the Git cache."
 		git.log "${lcErr}${out}"
 	fi
 
