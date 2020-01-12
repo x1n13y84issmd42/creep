@@ -8,7 +8,11 @@ runes.decrypt.start
 
 for FILE in ${RUNES[@]}; do
 	FILE=${FILE#*  } # Trimming that leading "M  " status marker.
-	runes.decrypt $FILE
+	if git.diff $FILE; then
+		runes.loggg "The ${lcRune}${FILE}${lcX} has changed, skipping decryption."
+	else
+		runes.decrypt $FILE
+	fi
 done
 
 runes.logg "\o/"

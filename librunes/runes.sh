@@ -168,9 +168,13 @@ function runes.decrypt.start {
 		local passKey=$(runes.passKey)
 		local tmpFN="$passKey.dec"
 
-		runes.logg "Decrypting the ${lcRune}$passKey${lcX} file."
-		openssl rsautl -decrypt -inkey $privKey -in $passKey -out $tmpFN
-		mv $tmpFN $passKey
+		if git.diff $passKey; then
+			runes.logg "The ${lcRune}$passKey${lcX} file has changed, skipping decryption."
+		else
+			runes.logg "Decrypting the ${lcRune}$passKey${lcX} file."
+			openssl rsautl -decrypt -inkey $privKey -in $passKey -out $tmpFN
+			mv $tmpFN $passKey
+		fi
 	fi
 }
 
