@@ -38,6 +38,12 @@ function boss.execute {
 		[[ ! -z $OUT ]] && echo ${OUT[@]}
 		cd $WD
 	done
+
+	# And lastly, executing it in the root folder.
+	echo ""
+	boss.log "Executing in ${lcFile}[the project root]"
+	local OUT=$(eval "$@")
+	[[ ! -z $OUT ]] && echo ${OUT[@]}
 }
 
 # Adds a folder or a repository under namagement.
