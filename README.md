@@ -28,7 +28,7 @@ Runes is a tool to automatically and transparently encrypt and decrypt sensitive
 ![](assets/runes.png)
 
 ### Usage
-IN order for Runes to work, you'll need hooks. Runes can install them for you:
+In order for Runes to work, you'll need hooks. Runes can install them for you:
 ```Shell
 creep/runes install-hooks
 ```
