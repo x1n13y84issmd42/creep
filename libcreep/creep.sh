@@ -80,7 +80,7 @@ function creep.echo {
 	_IFS=$IFS && IFS='' && echo -en "${s}${t}${lcX}" $@ >&2 && echo -en "$lcX\n" >&2 && IFS=$_IFS
 }
 
-# A logging functions.
+# Logging functions.
 function creep.log {
 	[[ ${CREEP_LOG:-2} -ge 1 ]] && creep.echo "creep" $lcLGray $@
 }

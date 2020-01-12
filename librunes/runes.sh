@@ -129,7 +129,6 @@ function runes.encrypt.start {
 #	$2 A silence flag.
 function runes.encrypt {
 	if runes.encrypt.precondition "encrypt" $1; then
-		#TODO: tunes.diff $1
 		local passKey=$(runes.passKey)
 		local tmpFN="$1.enc"
 

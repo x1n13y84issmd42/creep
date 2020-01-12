@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# A logging functions.
+# Logging functions.
 function git.log {
 	[[ ${CREEP_GIT_LOG:-2} -ge 1 ]] && creep.echo "git" $lcYellow $@
 }

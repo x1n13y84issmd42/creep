@@ -103,6 +103,9 @@ function str.enum {
 	echo -n " and $1"
 }
 
+# Executes a command and redirects it's stderr to stdout for capturing.
+# Arguments:
+#	$@ Whatever.
 function sys.exec {
 	eval "$@ 2>&1"
 }

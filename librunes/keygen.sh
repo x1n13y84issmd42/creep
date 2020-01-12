@@ -25,8 +25,10 @@ if [[ $SSLRES == 0 ]]; then
 	runes.log ".gitignoring the $PRIV file..."
 	git.ignore $PRIV 
 
+	# Remember to keep the key.
 	runes.log "${lcAlert}Remember to keep the ${lcCmd}${PRIV}${lcAlert} file secure and backup it up in multiple different storages."
 	runes.log "${lcAlert}Your teammates will need it in order to access the secured files."
+	runes.log ""
 	runes.log "\o/"
 else
 	runes.log "Failed to generate keys."

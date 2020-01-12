@@ -4,7 +4,7 @@ source creep/libcreep/creep.sh
 
 CREEP_BOSS_SM_N=0
 
-# A logging functions.
+# Logging functions.
 function boss.log {
 	[[ ${CREEP_BOSS_LOG:-2} -ge 1 ]] && creep.echo "boss" $lcRed $@
 }
@@ -58,6 +58,8 @@ function boss.add {
 	local projName=""
 	projName=$(boss.projectName $1)
 	[[ $? == 0 ]] && doGit=1
+	# 0 from boss.projectName means $1 is a URL.
+	# So have to work some Git on those.
 
 	if flist.contains $BOSS_FILE $projName; then
 		boss.log "The ${lcFile}${projName}${lcX} project is already under management."
@@ -65,13 +67,16 @@ function boss.add {
 	fi
 
 	if [[ $doGit == 1 ]]; then
+		# We're dealing with a URL, gotta import the project from it.
 		case $2 in
+			# The only working node so far.
 			sub|submodule)
 				boss.logg "Adding a Git submodule ${lcFile}$1"
 				git submodule add --quiet --force $1
 				(( CREEP_BOSS_SM_N += 1 ))
 			;;
 
+			# This one is not supported much.
 			clone)
 				if [[ -d $projName ]]; then
 					boss.logg "The ${lcFile}$projName${lcX} directory already exists. Trying to clone anyway."
@@ -89,6 +94,7 @@ function boss.add {
 			;;
 		esac
 	else
+		# We're dealing with a regular local directory.
 		boss.logg "Adding a directory ${lcFile}${projName}."
 
 		if [[ ! -d $projName ]]; then
@@ -114,7 +120,9 @@ function boss.remove {
 	fi
 }
 
-# Converts $1 to a correct project name.
+# In case $1 is a URL, it tries to extract a correct project name from it.
+# Arguments:
+#	$1 A string which is possibly a Git repository URL.
 function boss.projectName {
 	local pname=$1
 	local isURL=0
