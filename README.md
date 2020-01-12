@@ -58,16 +58,16 @@ And you're set for keeping private data in git. Just go on adding files, commiti
 
 # Boss
 
-A tool execute arbitrary commands in parallel in a set of directories under it's management, essentially demultiplexing them. Attempts to simplify control over sets of microservice architectures and other complex projects.
+A tool execute arbitrary commands in parallel in a set of directories under it's management, essentially demultiplexing them. Attempts to simplify control over microservice architectures and other complex projects.
 
-Use it to manage maultiple repositories with fewer commands and automate other tasks over bulks of files.
+Use it to manage multiple repositories with fewer commands and automate other tasks over bulks of files.
 
 ### Usage
 First, add a directory under the Boss' management. It can be either a simple directory or a Git repository URL:
 ```
 creep/boss + DirOne Folder2 https://github.com/microsoft/TypeScript.git
 ```
-This will add `TypeScript` as a git submodule to the project.
+This will add `TypeScript` as a git submodule to the project and start tracking all three folders.
 
 Assuming `DirOne` & `Folder2` are working copies as well, now you can run:
 ```
