@@ -7,12 +7,12 @@ source creep/libgit/git.sh
 OP=$1
 shift
 
-case $1 in
+case $OP in
 	submodule)
 		source creep/libgit/submodule.sh $@
 	;;
 
 	*)
-		git.log "Unknown command ${lcCmd}$1${lcX}."
+		git.log "Unknown command ${lcCmd}$OP${lcX}."
 	;;
 esac
