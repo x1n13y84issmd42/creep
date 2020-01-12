@@ -39,6 +39,6 @@ case $OP in
 	;;
 
 	*)
-		runes.log "Unknown command ${lcCmd}$OP"
+		runes.log "Unknown command ${lcCmd}$OP${lcX}."
 	;;
 esac

@@ -85,3 +85,7 @@ function str.isURL {
 
 	return 255
 }
+
+function sys.exec {
+	eval "$@ 2>&1"
+}

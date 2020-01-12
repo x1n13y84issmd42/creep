@@ -32,7 +32,8 @@ function boss.execute {
 	for PROJ in ${PROJECTS[@]}; do
 		PROJ=${PROJ##*\/}
 		cd $PROJ
-		boss.log "Doing in ${lcFile}$PROJ"
+		echo ""
+		boss.log "Executing in ${lcFile}$PROJ"
 		local OUT=$(eval "$@")
 		[[ ! -z $OUT ]] && echo ${OUT[@]}
 		cd $WD
@@ -62,8 +63,8 @@ function boss.add {
 	if [[ $dogit == 1 ]]; then
 		case $2 in
 			sub|submodule)
-				boss.logg "Adding a Git submodule $1."
-				git submodule add --force $1
+				boss.logg "Adding a Git submodule ${lcFile}$1"
+				git submodule add --quiet --force $1
 			;;
 
 			clone)

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source creep/libcreep/git.sh
+source creep/libgit/git.sh
 
 # Log colors & styles
 lc0="\e[0m"

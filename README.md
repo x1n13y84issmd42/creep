@@ -6,6 +6,7 @@ A small toolkit for Git to ease a developer's everyday life.
 Consists of
 * [Runes](#runes) &mdash; encrypting sensitive files on the go;
 * [Boss](#boss) &mdash; managing multiple repositories.
+* [Git](#git) &mdash; Git utilities and useful commands.
 
 ### Usage
 Add it as a git submodule to your project:
@@ -80,4 +81,13 @@ Arbitrary CLI commands are possible.
 If you want to use redirections `>` & `>>`, quote your command line:
 ```
 creep/boss "echo '## Bossed!' >> README.md && git commit -am 'Hola'"
+```
+
+# Git
+A set of Git utilities and useful commands of all kinds.
+
+### submodule purge
+Attempts to completely remove a Git submodule. Requires a clean working tree beforehand and afterwards (i.e. commit everything after you've executed it).
+```
+creep/git submodule purge useless-submodule-name
 ```

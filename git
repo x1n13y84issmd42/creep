@@ -1,0 +1,18 @@
+#!/bin/bash
+
+source creep/libcreep/utility.sh
+source creep/libcreep/creep.sh
+source creep/libgit/git.sh
+
+OP=$1
+shift
+
+case $1 in
+	submodule)
+		source creep/libgit/submodule.sh $@
+	;;
+
+	*)
+		git.log "Unknown command ${lcCmd}$1${lcX}."
+	;;
+esac

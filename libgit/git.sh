@@ -48,3 +48,16 @@ function git.isRepo {
 	cd $wd
 	return $xc
 }
+
+# A logging functions.
+function git.log {
+	[[ ${CREEP_GIT_LOG:-2} -ge 1 ]] && creep.echo "git" $lcYellow $@
+}
+
+function git.logg {
+	[[ ${CREEP_GIT_LOG:-2} -ge 2 ]] && creep.echo "git" $lcYellow $@
+}
+
+function git.loggg {
+	[[ ${CREEP_GIT_LOG:-2} -ge 3 ]] && creep.echo "git" $lcYellow $@
+}
