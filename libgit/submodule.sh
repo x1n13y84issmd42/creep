@@ -5,6 +5,8 @@ case $1 in
 		for P in ${@}; do
 			git.submodule.purge $P;
 		done
+		
+		git.log "\o/"
 	;;
 
 	*)

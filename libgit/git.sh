@@ -112,5 +112,4 @@ function git.submodule.purge {
 	git.log "${lcFile}./.gitmodules"
 	git.log "${lcFile}./.git/config"
 	git.log ""
-	git.log "\o/"
 }

@@ -63,6 +63,8 @@ A tool execute arbitrary commands in parallel in a set of directories under it's
 
 Use it to manage multiple repositories with fewer commands and automate other tasks over bulks of files.
 
+![](assets/boss.png)
+
 ### Usage
 First, add a directory under the Boss' management. It can be either a simple directory or a Git repository URL:
 ```
