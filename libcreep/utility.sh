@@ -24,7 +24,8 @@ function flist.without {
 	if [[ -f $1 ]]; then
 		IFS=$'\n'
 		local tmp="$1.tmp"
-		[[ -f $tmp ]] && rm $tmp && touch $tmp
+		[[ -f $tmp ]] && rm $tmp
+		touch $tmp
 
 		readarray -t LINES < $1
 
@@ -84,6 +85,22 @@ function str.isURL {
 	fi
 
 	return 255
+}
+
+# Nicely enumerates the passed arguments, so a call
+# str.enum Alice Bob Jane Tom
+# outputs
+# Alice, Bob, Jane & Tom
+function str.enum {
+	echo -n $1
+	shift
+
+	while [[ ${#} > 1 ]]; do
+		echo -n ", $1"
+		shift
+	done
+
+	echo -n " and $1"
 }
 
 function sys.exec {

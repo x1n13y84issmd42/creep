@@ -2,6 +2,8 @@
 
 source creep/libcreep/creep.sh
 
+CREEP_BOSS_SM_N=0
+
 # A logging functions.
 function boss.log {
 	[[ ${CREEP_BOSS_LOG:-2} -ge 1 ]] && creep.echo "boss" $lcRed $@
@@ -51,33 +53,30 @@ function boss.execute {
 #	$1 Either a directory name or a repository URL.
 #	$2 Repository management mode. Valid values are 'clone' and 'submodule'.
 function boss.add {
-	local dirName="$1"
 	local mode="$2"
-	local dogit=0
+	local doGit=0
+	local projName=""
+	projName=$(boss.projectName $1)
+	[[ $? == 0 ]] && doGit=1
 
-	if str.isURL $1; then
-		dirName=${dirName##*\/}
-		dirName=${dirName%%\.*}
-		dogit=1
-	fi
-
-	if flist.contains $BOSS_FILE $dirName; then
-		boss.log "The ${lcFile}${dirName}${lcX} project is already under management."
+	if flist.contains $BOSS_FILE $projName; then
+		boss.log "The ${lcFile}${projName}${lcX} project is already under management."
 		return 0
 	fi
 
-	if [[ $dogit == 1 ]]; then
+	if [[ $doGit == 1 ]]; then
 		case $2 in
 			sub|submodule)
 				boss.logg "Adding a Git submodule ${lcFile}$1"
 				git submodule add --quiet --force $1
+				(( CREEP_BOSS_SM_N += 1 ))
 			;;
 
 			clone)
-				if [[ -d $dirName ]]; then
-					boss.logg "The ${lcFile}$dirName${lcX} directory already exists. Trying to clone anyway."
-					boss.logg "${lcAlert}TODO:${lcX} Check for files."
-					git clone $1 $dirName
+				if [[ -d $projName ]]; then
+					boss.logg "The ${lcFile}$projName${lcX} directory already exists. Trying to clone anyway."
+					boss.logg "${lcAlert}TODO:${lcX} Check for files in there."
+					git clone $1 $projName
 				else
 					boss.logg "Cloing the ${lcFile}${1}${lcX}repository."
 					git clone $1
@@ -90,17 +89,17 @@ function boss.add {
 			;;
 		esac
 	else
-		boss.logg "Adding a directory ${lcFile}${dirName}."
+		boss.logg "Adding a directory ${lcFile}${projName}."
 
-		if [[ ! -d $dirName ]]; then
+		if [[ ! -d $projName ]]; then
 			boss.logg "The directory is not there, making it."
-			mkdir $dirName
+			mkdir $projName
 		fi
 	fi
 
-	echo $dirName >> $BOSS_FILE
+	echo $projName >> $BOSS_FILE
 
-	boss.log "Managing the ${lcFile}${dirName}${lcX} project from now on."
+	boss.log "Managing the ${lcFile}${projName}${lcX} project from now on."
 }
 
 # Removes a project under the Boss' management.
@@ -112,5 +111,26 @@ function boss.remove {
 		boss.log "Not managing the ${lcFile}${1}${lcX} project anymore."
 	else
 		boss.log "The ${lcFile}${1}${lcX} project has never been managed."
+	fi
+}
+
+# Converts $1 to a correct project name.
+function boss.projectName {
+	local pname=$1
+	local isURL=0
+
+	if str.isURL $pname; then
+		pname=${pname##*\/}
+		pname=${pname%%\.*}
+
+		isURL=1
+	fi
+
+	echo -n $pname
+
+	if [[ $isURL == 1 ]]; then
+		return 0
+	else
+		return 255
 	fi
 }

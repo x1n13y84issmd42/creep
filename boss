@@ -8,15 +8,34 @@ shift
 
 case $OP in
 	+|add)
+		names=()
 		for f in "${@}"; do
 			boss.add $f ${CREEP_BOSS_ADD_MODE:-submodule}
+			names+=($(boss.projectName $f))
 		done
+
+		# When using the submodule mode there are changes already staged automatically,
+		# so commiting them right away, adding the bossfile along the way.
+		if [[ $CREEP_BOSS_SM_N > 0 ]]; then
+			boss.logg "Commiting changes."
+
+			git add .creep/.boss
+			list=$(str.enum ${names[@]})
+			out=$(git commit -m  "Added $list under creep/boss management.")
+
+			boss.logg "$out"
+			boss.logg ""
+			boss.logg "\o/"
+		fi
 	;;
 
 	-|rm|remove)
 		for f in "${@}"; do
 			boss.remove $f
 		done
+
+		boss.logg ""
+		boss.logg "\o/"
 	;;
 
 	*)

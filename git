@@ -8,7 +8,7 @@ OP=$1
 shift
 
 case $OP in
-	submodule)
+	sm|submodule)
 		source creep/libgit/submodule.sh $@
 	;;
 
