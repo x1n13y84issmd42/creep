@@ -9,16 +9,23 @@ CHANGED=()
 
 # First thing: checking if the secured file has changed. This is done by encrypting it
 # with a current version of the passkey and executing git diff of the result against HEAD.
-for RUNE in ${RUNES[@]}; do
-	runes.encrypt $RUNE silent
-	if git.diff $RUNE; then
-		runes.loggg "${lcRune}$RUNE${lcX} has changed."
-		CHANGED+=("$RUNE")
-	else
-		runes.loggg "${lcRune}$RUNE${lcX} is up to date."
-	fi
-	runes.decrypt $RUNE silent
-done;
+if [[ -f .creep/runes.pass.key ]]; then
+	for RUNE in ${RUNES[@]}; do
+		runes.encrypt $RUNE silent
+		if git.diff $RUNE; then
+			runes.loggg "${lcRune}$RUNE${lcX} has changed."
+			CHANGED+=("$RUNE")
+		else
+			runes.loggg "${lcRune}$RUNE${lcX} is up to date."
+		fi
+		runes.decrypt $RUNE silent
+	done;
+else
+	# If there's no passkey file it likely means we have just added creep for the first time
+	# and no encryption has happened before, hence no passkey file.
+	# Just encrypting everything with a new one.
+	CHANGED=${RUNES[@]}
+fi
 
 # STarting the encryption and adding only the changeed files.
 if [[ ${#CHANGED[@]} > 0 ]]; then
