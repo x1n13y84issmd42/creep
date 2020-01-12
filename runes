@@ -33,9 +33,19 @@ case $OP in
 		done
 	;;
 
-	install-hooks)
-		hook.install creep/librunes/.githooks/pre-commit .git/hooks/pre-commit $1
-		hook.install creep/librunes/.githooks/post-checkout .git/hooks/post-checkout $1
+	install-hooks)	
+		# Checking if parent directory is a repo - that means we're in a Git submodule.
+		# The hooks folder is different for submodules.
+		PDIR=$(realpath $(pwd)/../)
+		if git.isRepo $PDIR; then
+			runes.logg "Detected a Git submodule environment, using a different hooks location."
+			PWD=$(pwd)
+			hook.install creep/librunes/.githooks/pre-commit ../.git/modules/${PWD##*/}/hooks/pre-commit $1
+			hook.install creep/librunes/.githooks/post-checkout ../.git/modules/${PWD##*/}/hooks/post-checkout $1
+		else
+			hook.install creep/librunes/.githooks/pre-commit .git/hooks/pre-commit $1
+			hook.install creep/librunes/.githooks/post-checkout .git/hooks/post-checkout $1
+		fi
 	;;
 
 	*)

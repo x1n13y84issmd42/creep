@@ -56,7 +56,7 @@ function git.diff {
 function git.isRepo {
 	local wd=$(pwd)
 	cd $1
-	$(git status)
+	git status > /dev/null
 	local xc=$?
 	cd $wd
 	return $xc

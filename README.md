@@ -33,7 +33,6 @@ In order for Runes to work, you'll need hooks. Runes can install them for you:
 ```Shell
 creep/runes install-hooks
 ```
-> TODO: detect when in submodule and install hooks in proper place (`.git/modules/module_name/hooks`).
 
 Also you'll need keys, so generate them from your project root directory:
 ```Shell
