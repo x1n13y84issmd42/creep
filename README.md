@@ -73,7 +73,7 @@ Assuming `DirOne` & `Folder2` are working copies as well, now you can run:
 ```
 creep/boss git checkout -b bossed/totally
 ```
-This executes the `git checkout -b bossed/totally` in all three folders and essentially switches all the projects to new, the same named, branches.
+This executes `git checkout -b bossed/totally` in all three folders and essentially switches all the projects to new branches.
 
 Arbitrary CLI commands are possible.
 
