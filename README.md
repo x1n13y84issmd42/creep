@@ -59,7 +59,7 @@ And you're set for keeping private data in git. Just go on adding files, commiti
 
 # Boss
 
-A tool execute arbitrary commands in parallel in a set of directories under it's management, essentially demultiplexing them. Attempts to simplify control over microservice architectures and other complex projects.
+A tool to execute arbitrary commands in parallel in a set of directories under it's management, essentially demultiplexing them. Attempts to simplify control over microservice architectures and other complex projects.
 
 Use it to manage multiple repositories with fewer commands and automate other tasks over bulks of files.
 
@@ -70,9 +70,9 @@ First, add a directory under the Boss' management. It can be either a simple dir
 ```
 creep/boss + DirOne Folder2 https://github.com/microsoft/TypeScript.git
 ```
-This will add `TypeScript` as a git submodule to the project and start tracking all three folders.
+This will add `TypeScript` as a git submodule to the project and start tracking all three folders. Boss will automatically commit the changes it's made during this operation.
 
-Assuming `DirOne` & `Folder2` are working copies as well, now you can run:
+Assuming `DirOne` & `Folder2` are Git working copies as well, now you can run:
 ```
 creep/boss git checkout -b bossed/totally
 ```
