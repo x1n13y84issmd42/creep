@@ -133,7 +133,7 @@ function runes.encrypt {
 		local tmpFN="$1.enc"
 
 		[[ ! $2 ]] && runes.log "Encrypting ${lcRune}${1}${lcX}."
-		openssl enc -aes-256-cbc -pass file:$passKey -nosalt -in $1 -out $tmpFN
+		openssl enc -aes-256-cbc -pass file:$passKey -nosalt -pbkdf2 -in $1 -out $tmpFN
 		mv $tmpFN $1
 	fi
 }
@@ -187,7 +187,7 @@ function runes.decrypt {
 		local tmpFN="$1.dec"
 
 		[[ ! $2 ]] && runes.log "Decrypting ${lcRune}${1}${lcX}."
-		openssl enc -d -aes-256-cbc -pass file:$passKey -nosalt -in $1 -out $tmpFN
+		openssl enc -d -aes-256-cbc -pass file:$passKey -nosalt -pbkdf2 -in $1 -out $tmpFN
 
 		if [[ $? == 0 ]]; then
 			mv $tmpFN $1
