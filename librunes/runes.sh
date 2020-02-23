@@ -8,7 +8,7 @@ function runes.echo {
 	_IFS=$IFS && IFS='' && echo -en "\e[35mrunes${lcX}" $@ >&2 && echo -en "$lcX\n" >&2 && IFS=$_IFS
 }
 
-# A logging functions.
+# Logging functions.
 function runes.log {
 	[[ ${CREEP_RUNES_LOG:-2} -ge 1 ]] && runes.echo $@
 }
@@ -27,7 +27,7 @@ PRIV_KEY_FILE=.creep/runes.private.key
 PASS_KEY_FILE=.creep/runes.pass.key
 
 # Initalizes the thing by checking for presence of needed files,
-# giving some hints on where to obtain them on case they're missing,
+# giving some hints on where to obtain them in case they're missing,
 # and, if everything is in place, reading the .runes file.
 function runes.load {
 
@@ -79,7 +79,7 @@ function runes.load.args {
 # so a random key is used to encrypt the files, then in turn it's enrypted with the public key
 # and added to the repo.
 # Usually it's used once per commit.
-function runes.new.passKey {
+function runes.new.passKeyFile {
 	runes.logg "Generating a new passkey file."
 	openssl rand -hex 128 > $PASS_KEY_FILE
 }
@@ -98,28 +98,28 @@ function runes.isRune {
 }
 
 # Outputs a path to the public key file.
-function runes.publicKey {
+function runes.publicKeyFile {
 	if [[ -f $PUB_KEY_FILE ]]; then
 		echo $PUB_KEY_FILE
 	fi
 }
 
 # Outputs a path to the private key file.
-function runes.privateKey {
+function runes.privateKeyFile {
 	if [[ -f $PRIV_KEY_FILE ]]; then
 		echo $PRIV_KEY_FILE
 	fi
 }
 
 # Outputs a path to a passkey file.
-function runes.passKey {
+function runes.passKeyFile {
 	echo $PASS_KEY_FILE
 }
 
 # Initializes the encryption process by generating a new passkey file.
 function runes.encrypt.start {
 	if runes.encrypt.precondition "start the encryption"; then
-		runes.new.passKey;
+		runes.new.passKeyFile;
 	fi
 }
 
@@ -129,32 +129,32 @@ function runes.encrypt.start {
 #	$2 A silence flag.
 function runes.encrypt {
 	if runes.encrypt.precondition "encrypt" $1; then
-		local passKey=$(runes.passKey)
-		local tmpFN="$1.enc"
+		local passKeyFile=$(runes.passKeyFile)
+		local tmpFile="$1.enc"
 
 		[[ ! $2 ]] && runes.log "Encrypting ${lcRune}${1}${lcX}."
-		openssl enc -aes-256-cbc -pass file:$passKey -nosalt -pbkdf2 -md sha256 -in $1 -out $tmpFN
-		mv $tmpFN $1
+		openssl enc -aes-256-cbc -pass file:$passKeyFile -nosalt -pbkdf2 -md sha256 -in $1 -out $tmpFile
+		mv $tmpFile $1
 	fi
 }
 
 # Finalizes the encryption by encrypting the passkey file and adding it to the repository.
 function runes.encrypt.finish {
 	if runes.encrypt.precondition "finish the encryption"; then
-		local pubKey=$(runes.publicKey)
-		local privKey=$(runes.privateKey)
-		local passKey=$(runes.passKey)
-		local tmpFN="$passKey.enc"
+		local pubKeyFile=$(runes.publicKeyFile)
+		local privKeyFile=$(runes.privateKeyFile)
+		local passKeyFile=$(runes.passKeyFile)
+		local tmpFile="$passKeyFile.enc"
 
-		runes.log "Encrypting the ${lcRune}$passKey${lcX} file and adding it to the repository."
-		openssl rsautl -encrypt -pubin -inkey $pubKey -in $passKey -out $tmpFN
-		mv $tmpFN $passKey
-		git.add $passKey
+		runes.log "Encrypting the ${lcRune}$passKeyFile${lcX} file and adding it to the repository."
+		openssl rsautl -encrypt -pubin -inkey $pubKeyFile -in $passKeyFile -out $tmpFile
+		mv $tmpFile $passKeyFile
+		git.add $passKeyFile
 
 		# Decrypting it back for consistency
 		#TODO: move openssl ops, get rid of that mv
-		openssl rsautl -decrypt -inkey $privKey -in $passKey -out $tmpFN
-		mv $tmpFN $passKey
+		openssl rsautl -decrypt -inkey $privKeyFile -in $passKeyFile -out $tmpFile
+		mv $tmpFile $passKeyFile
 
 		runes.logg "\o/"
 	fi;
@@ -163,16 +163,16 @@ function runes.encrypt.finish {
 # Initializes the decryption process by decrypting the passkey file first.
 function runes.decrypt.start {
 	if runes.decrypt.precondition "start the decryption"; then
-		local privKey=$(runes.privateKey)
-		local passKey=$(runes.passKey)
-		local tmpFN="$passKey.dec"
+		local privKeyFile=$(runes.privateKeyFile)
+		local passKeyFile=$(runes.passKeyFile)
+		local tmpFile="$passKeyFile.dec"
 
-		if git.diff $passKey; then
-			runes.logg "The ${lcRune}$passKey${lcX} file has changed, skipping decryption."
+		if git.diff $passKeyFile; then
+			runes.logg "The ${lcRune}$passKeyFile${lcX} file has changed, skipping decryption."
 		else
-			runes.logg "Decrypting the ${lcRune}$passKey${lcX} file."
-			openssl rsautl -decrypt -inkey $privKey -in $passKey -out $tmpFN
-			mv $tmpFN $passKey
+			runes.logg "Decrypting the ${lcRune}$passKeyFile${lcX} file."
+			openssl rsautl -decrypt -inkey $privKeyFile -in $passKeyFile -out $tmpFile
+			mv $tmpFile $passKeyFile
 		fi
 	fi
 }
@@ -183,17 +183,17 @@ function runes.decrypt.start {
 #	$2 A silence flag.
 function runes.decrypt {
 	if runes.decrypt.precondition "decrypt" $1; then
-		local passKey=$(runes.passKey)
-		local tmpFN="$1.dec"
+		local passKeyFile=$(runes.passKeyFile)
+		local tmpFile="$1.dec"
 
 		[[ ! $2 ]] && runes.log "Decrypting ${lcRune}${1}${lcX}."
-		openssl enc -d -aes-256-cbc -pass file:$passKey -nosalt -pbkdf2 -md sha256 -in $1 -out $tmpFN
+		openssl enc -d -aes-256-cbc -pass file:$passKeyFile -nosalt -pbkdf2 -md sha256 -in $1 -out $tmpFile
 
 		if [[ $? == 0 ]]; then
-			mv $tmpFN $1
+			mv $tmpFile $1
 		else
 			runes.log "${lcErr}Could not decrypt ${lcRune}${1}${lcX}."
-			[[ -f $tmpFN ]] && rm $tmpFN
+			[[ -f $tmpFile ]] && rm $tmpFile
 		fi
 	fi
 }
@@ -204,8 +204,8 @@ function runes.decrypt {
 #	$1 A name of operation the precondition is checked for.
 #	$2 A file name being decrypted.
 function runes.decrypt.precondition {
-	local privKey=$(runes.privateKey)
-	if [[ ! -f $privKey ]]; then
+	local privKeyFile=$(runes.privateKeyFile)
+	if [[ ! -f $privKeyFile ]]; then
 		runes.log "${lcErr}Cannot $1 $2 because private key is missing."
 
 		return 255
@@ -220,8 +220,8 @@ function runes.decrypt.precondition {
 #	$1 A name of operation the precondition is checked for.
 #	$2 A file name being decrypted.
 function runes.encrypt.precondition {
-	local privKey=$(runes.publicKey)
-	if [[ ! -f $privKey ]]; then
+	local privKeyFile=$(runes.publicKeyFile)
+	if [[ ! -f $privKeyFile ]]; then
 		runes.log "${lcErr}Cannot $1 $2 because public key is missing."
 
 		return 255
