@@ -48,14 +48,14 @@ creep/runes secure keys/veryprivate.key
 
 And you're set for keeping private data in git. Just go on adding files, commiting & pushing as usual, Runes will take care about the privacy. The files from the `.creep/.runes` list are now encrypted and decrypted as you go.
  
-> :eggplant: The `.creep/runes.private.key` file is gitignored, take some care about it so it doesn't get lost or something, otherwise you won't ever read your precious files again, y'know.
+> :eggplant: The `.creep/runes.private.key` file is gitignored, take some care about it so it doesn't get lost or something, otherwise you won't ever be able to access your files again.
 
 ### Configuration
 
 |Parameter|Decription|Values|
 |-|-|-|
 |`CREEP_RUNES_LOG`|Controls the logging verbosity. Set it to `0` to disable logging.|0—3
-|`CREEP_RUNES_OFF`|Disables Runes altogether.|1
+|`CREEP_RUNES_OFF`|Disables Runes altogether.<br>:eggplant: Be aware not to `git add` the decrypted files!|1
 
 # Boss
 
